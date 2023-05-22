@@ -12,10 +12,18 @@ public class ComandosBasicos : MonoBehaviour
     public Transform posicaoSensor;
     public LayerMask layerChao;
 
+    private Animator anim;
+    private Animator jump;
+
+    private SpriteRenderer spriteRb;
+
     // Start is called before the first frame update
     void Start()
     {
-        rbPlayer = GetComponent<Rigidbody2D>(); 
+        rbPlayer = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        jump = GetComponent<Animator>();
+        spriteRb = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -25,10 +33,22 @@ public class ComandosBasicos : MonoBehaviour
 
         rbPlayer.velocity = new Vector2(movimentoX * velocidade , rbPlayer.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && sensor == true)
+        if (Input.GetButtonDown("Jump") && sensor == true) 
         {
             rbPlayer.AddForce(new Vector2(0, forcaPulo));
         }
+
+        anim.SetInteger("Run", (int)movimentoX);
+        jump.SetBool("Jump", sensor);
+
+        if(movimentoX > 0)
+        {
+            spriteRb.flipX = false;
+        }else if (movimentoX < 0)
+        {
+            spriteRb.flipX = true;
+        }
+
     }
 
     private void FixedUpdate()
