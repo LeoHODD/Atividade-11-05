@@ -38,6 +38,11 @@ public class ComandosBasicos : MonoBehaviour
             rbPlayer.AddForce(new Vector2(0, forcaPulo));
         }
 
+        if (Input.GetButton("Fire1"))
+        {
+            anim.SetTrigger("kick");
+        }
+
         anim.SetInteger("Run", (int)movimentoX);
         jump.SetBool("Jump", sensor);
 
