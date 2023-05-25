@@ -13,7 +13,9 @@ public class ComandosBasicos : MonoBehaviour
     public LayerMask layerChao;
 
     private Animator anim;
-    private Animator jump;
+
+    public GameObject projetil;
+    public Transform localDisparo;
 
     private SpriteRenderer spriteRb;
 
@@ -22,7 +24,6 @@ public class ComandosBasicos : MonoBehaviour
     {
         rbPlayer = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        jump = GetComponent<Animator>();
         spriteRb = GetComponent<SpriteRenderer>();
     }
 
@@ -40,11 +41,17 @@ public class ComandosBasicos : MonoBehaviour
 
         if (Input.GetButton("Fire1"))
         {
-            anim.SetTrigger("kick");
+            GameObject temp = Instantiate(projetil);
+
+            temp.transform.position = localDisparo.position;
+
+            temp.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(8, 0);
+
+            Destroy(temp.gameObject, 2);
         }
 
         anim.SetInteger("Run", (int)movimentoX);
-        jump.SetBool("Jump", sensor);
+        anim.SetBool("Jump", sensor);
 
         if(movimentoX > 0)
         {
