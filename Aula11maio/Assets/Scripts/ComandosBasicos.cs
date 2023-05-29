@@ -7,6 +7,8 @@ public class ComandosBasicos : MonoBehaviour
     public int velocidade;
     private Rigidbody2D rbPlayer;
     public float forcaPulo;
+    public bool verificarDirecao;
+    public float velocidadeTiro;
 
     public bool sensor;
     public Transform posicaoSensor;
@@ -38,6 +40,11 @@ public class ComandosBasicos : MonoBehaviour
         {
             rbPlayer.AddForce(new Vector2(0, forcaPulo));
         }
+        
+        if (Input.GetButton("Fire1"))
+        {
+            anim.SetTrigger("Tiro");
+        }
 
         if (Input.GetButton("Fire1"))
         {
@@ -45,20 +52,22 @@ public class ComandosBasicos : MonoBehaviour
 
             temp.transform.position = localDisparo.position;
 
-            temp.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(8, 0);
+            temp.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(velocidadeTiro, 0);
 
             Destroy(temp.gameObject, 2);
         }
 
+        
         anim.SetInteger("Run", (int)movimentoX);
         anim.SetBool("Jump", sensor);
 
-        if(movimentoX > 0)
+        if(movimentoX > 0 && verificarDirecao == true)
         {
-            spriteRb.flipX = false;
-        }else if (movimentoX < 0)
+            Flip();
+        }
+        else if (movimentoX < 0 && verificarDirecao == false)
         {
-            spriteRb.flipX = true;
+            Flip();
         }
 
     }
@@ -66,6 +75,17 @@ public class ComandosBasicos : MonoBehaviour
     private void FixedUpdate()
     {
         sensor = Physics2D.OverlapCircle(posicaoSensor.position, 0.1f, layerChao);
+    }
+
+    public void Flip()
+    {
+        verificarDirecao = !verificarDirecao;
+
+        float x = transform.localScale.x * -1;
+
+        transform.localScale = new Vector3(x, transform.localScale.y, transform.localScale.z);
+
+        velocidadeTiro *= -1;
     }
 
 }
