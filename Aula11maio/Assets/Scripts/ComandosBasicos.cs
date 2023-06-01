@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ComandosBasicos : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class ComandosBasicos : MonoBehaviour
 
     private SpriteRenderer spriteRb;
 
+    public TextMeshProUGUI textocoin;
+    private int quantidadeMoedas;
     // Start is called before the first frame update
     void Start()
     {
@@ -88,4 +92,16 @@ public class ComandosBasicos : MonoBehaviour
         velocidadeTiro *= -1;
     }
 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "coin")
+        {
+            quantidadeMoedas += 1;
+
+
+            textocoin.text = quantidadeMoedas.ToString();
+            Destroy(collision.gameObject);
+        }
+    }
 }
